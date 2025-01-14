@@ -11,7 +11,7 @@ router.post('/login', loginHandler);
 router.post('/logout', logoutHandler); 
 
 //to check authenticatoin upon refresh 
-router.post('/check', protectRoute , checkAuth); 
+router.get('/check', protectRoute , checkAuth); 
 
 
 export default router; 
