@@ -1,5 +1,5 @@
 /* eslint-disable react/prop-types */
-import avatar from "../assets/avatar2.svg";
+
 
 
 const Header = ({ userName }) => {

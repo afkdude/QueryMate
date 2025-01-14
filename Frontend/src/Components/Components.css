@@ -106,3 +106,27 @@
 .syntax-highlighter::-webkit-scrollbar-thumb:hover {
   background-color: #555; /* Darker color on hover */
 }
+
+
+/* send icon aanimation  */
+
+ @keyframes gradientAnimation {
+    0% {
+      background-position: 0% 50%;
+    }
+    50% {
+      background-position: 100% 50%;
+    }
+    100% {
+      background-position: 0% 50%;
+    }
+  }
+
+  .gradient-icon {
+    background: linear-gradient(45deg, #16C47F, #1E90FF, #FF6347);
+    background-size: 200% 200%;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    animation: gradientAnimation 3s infinite;
+    font-size: 2rem; /* Adjust as needed */
+  }

@@ -6,13 +6,24 @@ import queryLogo from "../assets/queryLogo.png";
 import { CiChat1 } from "react-icons/ci";
 import { IoMdArrowDropleft, IoMdArrowDropright } from "react-icons/io";
 import { useAuthStore } from "../Store/useAuthStore.js";
+import { useChatStore } from "../Store/useChatStore.js";
+import { useEffect } from "react";
 
 const SideBar = ({ isSidebarMinimized, toggleSidebar }) => {
   const { logout } = useAuthStore(); // Access the logout function from the store
-
+  const { chatList, getChatList, fetchMessages } = useChatStore();
+  const { authUser } = useAuthStore();
   const handleLogout = () => {
     logout(); // Call the logout function
   };
+
+
+  
+  useEffect(() => {
+    if (authUser) {
+      getChatList(authUser._id); // Replace `id` with the actual property name for userId
+    }
+  }, [authUser, getChatList]);
 
   return (
     <div
@@ -29,10 +40,11 @@ const SideBar = ({ isSidebarMinimized, toggleSidebar }) => {
             isSidebarMinimized ? " hidden w-[30px]" : "w-[60px]"
           } transition-all duration-300`}
         />
-        {isSidebarMinimized && (
-          <img src={queryLogo} alt="" />
-        )}
-        <button className="text-2xl cursor-pointer text-white" onClick={toggleSidebar}>
+        {isSidebarMinimized && <img src={queryLogo} alt="" />}
+        <button
+          className="text-2xl cursor-pointer text-white"
+          onClick={toggleSidebar}
+        >
           {isSidebarMinimized ? <IoMdArrowDropright /> : <IoMdArrowDropleft />}
         </button>
       </div>
@@ -41,19 +53,35 @@ const SideBar = ({ isSidebarMinimized, toggleSidebar }) => {
       {!isSidebarMinimized ? (
         <div className="flex flex-col h-full border-b-[2px] text-gray-800">
           <div className="upperSide flex flex-col p-4 gap-4 flex-[0.8]">
-            <div className="new-chat-btn flex items-center justify-center bg-[#19A7CE] text-white font-semibold text-xl rounded-md py-2 gap-1 cursor-pointer ">
+            <div
+              className="new-chat-btn flex items-center justify-center bg-[#19A7CE] text-white font-semibold text-xl rounded-md py-2 gap-1 cursor-pointer   "
+             
+            >
               <FiPlus className="text-[25px]" />
               <button className="btn-hover color-1">New Chat</button>
             </div>
             <div className="chat-lists flex flex-col gap-2">
-              <div className="query-btn flex items-center justify-start ps-2 bg-[#dbedf6] rounded-md py-2 gap-2">
-                <CiChat1 className="text-[20px] text-[#146C94]" />
-                <button>Write an article on democracy</button>
-              </div>
-              <div className="query-btn flex items-center justify-start ps-2 bg-[#dbedf6] rounded-md py-2 gap-2">
-                <CiChat1 className="text-[20px] text-[#146C94]" />
-                <button>What is 22+22?</button>
-              </div>
+              {/* chat list */}
+              {chatList.map((v, i) => {
+                return (
+                  <div
+                    key={i} // Adding a unique key for each item
+                    className="query-btn flex items-center justify-start ps-2 bg-[#dbedf6] rounded-md py-2 gap-2"
+                    onClick={() => fetchMessages(v._id)} // Fetch messages for the selected chat
+                  >
+                    <CiChat1 className="text-[20px] text-[#146C94]" />
+                    <button className="flex flex-1 pe-2 items-center justify-between">
+                      <span className="font-semibold">{v.firstMessage}</span>
+                      <span className="text-xs">
+                        {new Date(v.lastUpdated).toLocaleTimeString([], {
+                          hour: "2-digit",
+                          minute: "2-digit",
+                        })}
+                      </span>
+                    </button>
+                  </div>
+                );
+              })}
             </div>
           </div>
         </div>

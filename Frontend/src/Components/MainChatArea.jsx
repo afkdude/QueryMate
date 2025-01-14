@@ -1,18 +1,26 @@
+/* eslint-disable react/prop-types */
 import { useState } from "react";
 import avatar from "../assets/avtar.svg";
 import response from "../assets/output3.svg";
-import { IoSend } from "react-icons/io5";
+
 import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
 import { oneDark } from "react-syntax-highlighter/dist/esm/styles/prism";
 import './Components.css'
 import Header from "./Header";
 import { useAuthStore } from "../Store/useAuthStore.js";
 import { axiosInstance } from "../lib/axios.js"; // Ensure axiosInstance is set up for API calls
+import { RiApps2AiFill } from "react-icons/ri";
+
 
 const MainChatArea = ({ isSidebarMinimized }) => {
   const [input, setInput] = useState("");
   const [messages, setMessages] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
+  
+
+ 
+
+
   const { authUser } = useAuthStore();
 
   const handleSend = async () => {
@@ -130,7 +138,7 @@ const MainChatArea = ({ isSidebarMinimized }) => {
             rows={1}
           />
           <button onClick={handleSend}>
-            <IoSend className="text-[#16C47F]" />
+            <RiApps2AiFill className="gradient-icon" />
           </button>
         </div>
       </div>
